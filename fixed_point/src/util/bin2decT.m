@@ -1,5 +1,5 @@
 function d = bin2decT(bin, T)
-%BIN2DECT function converts a binary string to a non-negative decimal number 
+%BIN2DECT converts a binary string to a non-negative decimal number 
 % within desired range of the numerictype T
 %   Input:  bin: a binary string, e.g. '001001'
 %           T: object describing the data type of fixed-point

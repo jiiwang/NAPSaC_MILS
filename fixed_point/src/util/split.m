@@ -1,5 +1,5 @@
 function [Afi1,Afi2] = split(A,T1,T2)
-%SPLIT function first converts a floating point number/vector/matrix to 
+%SPLIT first converts a floating point number/vector/matrix to 
 % its fixed-point format (Afi) of the desired numerictype T1. 
 % It then splits the converted fixed-point data into high part (Afi1) 
 % and low part (Afi2) of numerictype T2 such that:
