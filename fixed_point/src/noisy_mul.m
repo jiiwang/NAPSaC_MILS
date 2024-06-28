@@ -1,6 +1,5 @@
 function c = noisy_mul(a,b,nDAC,nbit,nflag)
 %NOISY_MUL performs a*b operation based on the 5-step noisy model.  
-% Inputs a, b, and the output are scalars of the same numerictype T
 %   Input:  a: a floating-point number
 %           b: a floating-point number
 %           nDAC: number of bits for the DAC/ADC noise

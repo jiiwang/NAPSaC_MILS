@@ -1,6 +1,5 @@
 function c = transfer_mul(a,b,nDAC,nbit,r, nflag)
 %TRANSFER_MUL performs a*b operation based on the 5-step transfer model.  
-% Inputs a, b, and the output are scalars of the same numerictype T
 %   Input:  a: a floating-point number
 %           b: a floating-point number
 %           nDAC: number of bits for the DAC/ADC noise

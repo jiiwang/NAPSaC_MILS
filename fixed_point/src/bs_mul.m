@@ -1,6 +1,5 @@
 function c = bs_mul(a,b,nDAC,nbit,nflag)
 %BS_MUL performs a*b operation based on the 6-step bit-slicing noisy model.  
-% Inputs a, b, and the output are scalars of the same numerictype T
 %   Input:  a: a floating-point number
 %           b: a floating-point number
 %           nDAC: number of bits for the DAC/ADC noise
@@ -59,13 +58,13 @@ function c = bs_mul(a,b,nDAC,nbit,nflag)
     
     % Step 5: Digital quantization and process the result from 4
     % multiplications
-    % c = trun(c11ADC,T2) + 2^-nbit*(trun(c21ADC, T2)+trun(c12ADC, T2)) + 2^(-2*nbit)*trun(c22ADC,T2);
+    c = trun(c11ADC,T2) + 2^-nbit*(trun(c21ADC, T2)+trun(c12ADC, T2)) + 2^(-2*nbit)*trun(c22ADC,T2);
     
     % no truncation
     % c = c11ADC + 2^-nbit*(c21ADC + c12ADC) + 2^(-2*nbit)*c22ADC;
     
     % most siginificant part truncates to numerictype T1 (more bits)
-    c = trun(c11ADC,T1) + 2^-nbit*(trun(c21ADC, T2)+trun(c12ADC, T2)) + 2^(-2*nbit)*trun(c22ADC,T2);
+    % c = trun(c11ADC,T1) + 2^-nbit*(trun(c21ADC, T2)+trun(c12ADC, T2)) + 2^(-2*nbit)*trun(c22ADC,T2);
 
     % Step 6: Digital quantization 
     c = trun(c, T1);
