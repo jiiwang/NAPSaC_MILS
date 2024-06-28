@@ -1,0 +1,244 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>test_split</title>
+<meta name="generator" content="MATLAB 23.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-06-28">
+<meta name="DC.source" content="test_split.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#2">Create fixed-point numeritype object</a>
+</li>
+<li>
+<a href="#3">Number generation</a>
+</li>
+<li>
+<a href="#4">Bit slicing</a>
+</li>
+</ul>
+</div>
+<pre class="codeinput">format <span class="string">longE</span>;
+</pre>
+<h2 id="2">Create fixed-point numeritype object</h2>
+<p>create a 17 bit fixed-point numeritype object T1 with 1 bit for sign, and 16 bits for fractions (target precision)</p>
+<pre class="codeinput">nbit = 8;
+T1 = numerictype(1,2*nbit+1, 2*nbit);
+<span class="comment">% create a 9 bit fixed-point numeritype object T2 with 1 bit for sign,</span>
+<span class="comment">% and 8 bits for fractions (actual precision)</span>
+T2 = numerictype(1,nbit+1,nbit);
+</pre>
+<h2 id="3">Number generation</h2>
+<pre class="codeinput">round5 = @(x) round(x.*10.^5)./10.^5;
+a = round5(rand(1))
+
+<span class="comment">% a in 8-bit fixed point, and its binary representation</span>
+afi8 = trun(a, T2)
+
+afi8.bin
+
+<span class="comment">% a in 16-bit fixed point, and its binary representation</span>
+afi16 = trun(a, T1)
+
+afi16.bin
+</pre>
+<pre class="codeoutput">
+a =
+
+     5.739800000000000e-01
+
+
+afi8 = 
+
+     5.742187500000000e-01
+
+          DataTypeMode: Fixed-point: binary point scaling
+            Signedness: Signed
+            WordLength: 9
+        FractionLength: 8
+
+ans =
+
+    '010010011'
+
+
+afi16 = 
+
+     5.739746093750000e-01
+
+          DataTypeMode: Fixed-point: binary point scaling
+            Signedness: Signed
+            WordLength: 17
+        FractionLength: 16
+
+ans =
+
+    '01001001011110000'
+
+</pre>
+<h2 id="4">Bit slicing</h2>
+<p>splitting a into two 8-bit fixed point such that afi16 = a1 + 2^{-nbit}a2. Show binary representations of a1 and a2</p>
+<pre class="codeinput">[a1, a2] = split(a, T1, T2);
+a1
+a1.bin
+a2
+a2.bin
+
+<span class="comment">% error: afi16 - a_bs:</span>
+afi16.double - (a1.double + 2^-nbit*a2.double)
+</pre>
+<pre class="codeoutput">
+a1 = 
+
+     5.703125000000000e-01
+
+          DataTypeMode: Fixed-point: binary point scaling
+            Signedness: Signed
+            WordLength: 9
+        FractionLength: 8
+
+ans =
+
+    '010010010'
+
+
+a2 = 
+
+     9.375000000000000e-01
+
+          DataTypeMode: Fixed-point: binary point scaling
+            Signedness: Signed
+            WordLength: 9
+        FractionLength: 8
+
+ans =
+
+    '011110000'
+
+
+ans =
+
+     0
+
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2023b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+format longE;
+
+%% Create fixed-point numeritype object
+% create a 17 bit fixed-point numeritype object T1 with 1 bit for sign, 
+% and 16 bits for fractions (target precision)
+nbit = 8;
+T1 = numerictype(1,2*nbit+1, 2*nbit);
+% create a 9 bit fixed-point numeritype object T2 with 1 bit for sign, 
+% and 8 bits for fractions (actual precision)
+T2 = numerictype(1,nbit+1,nbit);
+
+%% Number generation
+round5 = @(x) round(x.*10.^5)./10.^5;
+a = round5(rand(1))
+
+% a in 8-bit fixed point, and its binary representation
+afi8 = trun(a, T2)
+
+afi8.bin
+
+% a in 16-bit fixed point, and its binary representation
+afi16 = trun(a, T1)
+
+afi16.bin
+
+%% Bit slicing
+% splitting a into two 8-bit fixed point such that
+% afi16 = a1 + 2^{-nbit}a2. Show binary representations of a1 and a2
+[a1, a2] = split(a, T1, T2);
+a1
+a1.bin
+a2
+a2.bin
+
+% error: afi16 - a_bs:
+afi16.double - (a1.double + 2^-nbit*a2.double)
+
+##### SOURCE END #####
+-->
+</body>
+</html>
