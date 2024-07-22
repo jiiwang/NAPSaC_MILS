@@ -1,11 +1,12 @@
-function c = transfer_mul(a,b,nDAC,nbit,r, nflag)
+function c = transfer_mul(a,b,nDAC,nbit,r1,r2,alpha, beta, gamma, nflag)
 %TRANSFER_MUL performs a*b operation based on the 5-step transfer model.  
 %   Input:  a: a floating-point number
 %           b: a floating-point number
 %           nDAC: number of bits for the DAC/ADC noise
 %           nbit: number of bits for the optical noise/overall bits of the
 %           device
-%           r: parameter for the transfer function
+%           r1, r2, alpha: parameter for the transfer function
+%           beta, gamma: parameter for the affine map
 %           nflag: flag for noise term, add noise when nflag = 1, 
 %           no noise otherwise 
 %   Output: c: a signed nbit fixed-point number
@@ -26,9 +27,12 @@ function c = transfer_mul(a,b,nDAC,nbit,r, nflag)
         k = (amax-amin)/2^(nbit+2);
     end
 
-    % Step 1: Digital quantization and apply recover function
-    a_inv = recover(a, r);
-    b_inv = recover(b, r);
+    % Step 1: affine map, apply recover function, and digital quantization
+    amap = affmap(a,beta, gamma);
+    bmap = affmap(b,beta, gamma);
+
+    a_inv = recover(amap, r1, r2, alpha);
+    b_inv = recover(bmap, r1, r2, alpha);
     
     a_inv = trun(a_inv, T).double; 
     b_inv = trun(b_inv, T).double; 
@@ -39,8 +43,8 @@ function c = transfer_mul(a,b,nDAC,nbit,r, nflag)
      
     % Step 3: Apply transfer function
     % perform multiplication and add optical noise
-    a_tran = transfer(aDAC, r);
-    b_tran = transfer(bDAC, r);
+    a_tran = transfer(aDAC, r1, r2, alpha);
+    b_tran = transfer(bDAC, r1, r2, alpha);
 
     c_tran = a_tran*b_tran;
     co = c_tran + noise(k*sqrt(abs(c_tran)));
@@ -48,7 +52,9 @@ function c = transfer_mul(a,b,nDAC,nbit,r, nflag)
     % Step 4: Add ADC noise
     cA = co + noise(sigma);
 
-    % Step 5: Digital quantization
-    c = trun(cA, T);    
+    % Step 5: Digital quantization and recover of affine mapping
+    c = trun(cA, T);
+    
+    c = invmap_mul(c, a, b, beta, gamma);
 end
 

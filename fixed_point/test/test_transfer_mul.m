@@ -1,5 +1,3 @@
-% addpath('../src/')
-
 % # of trials per run
 ntrial = 100;
 % # of runs
@@ -12,13 +10,16 @@ y2 = zeros(n,ntrial);
 nbit = 8;
 T = numerictype(1,nbit+1,nbit);
 
-round4 = @(x) round(x.*10.^4)./10.^4;
-r = 0.8;
+r1 = 0.9;
+r2 = 0.85;
+alpha = 0.98;
+beta = 0.66;
+gamma = 0.26;
 
 for i = 1:n
     i
-    a = round4(rand(1));
-    b = round4(rand(1));
+    a = rand(1);
+    b = rand(1);
 
     c_8 = fi_mul(a,b,T);
     y(i) = c_8;
@@ -27,7 +28,7 @@ for i = 1:n
 
         c_8_no = noisy_mul(a, b, nbit, nbit, 1);
     
-        c_8_tran_no = transfer_mul(a, b, nbit, nbit, r, 1);
+        c_8_tran_no = transfer_mul(a, b, nbit, nbit, r1, r2, alpha, beta, gamma, 1);
     
         err1 = c_8.double-c_8_no.double;
         
@@ -48,14 +49,15 @@ histogram(y1);
 hold on;
 histogram(y2);
 xline(2^-8, '-r', 'LineWidth', 1.5);
-xline(2^-7, 'LineWidth', 1.5);
+xline(2^-7, '-y', 'LineWidth', 1.5);
+xline(2^-6, 'LineWidth', 1.5);
 leg1 = legend('$c_{8}-\widehat{c_{8}}$', ...
-     '$c_{8}-\widetilde{c_{8}}$', '$2^{-8}$', '$2^{-7}$');
+     '$c_{8}-\widetilde{c_{8}}$', '$2^{-8}$', '$2^{-7}$', '$2^{-6}$');
 set(leg1,'Interpreter','latex');
 set(leg1,'FontSize',30);
 set(leg1, 'Location','northwest');
 % 'Orientation','horizontal');
-ylim([0,n/5]);
+ylim([0,150]);
 xlabel('error')
 ylabel('count')
 ax = gca; 
