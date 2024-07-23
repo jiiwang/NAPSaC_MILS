@@ -7,7 +7,7 @@ function c = bs_mul(a,b,nDAC,nbit,nflag)
 %           device
 %           nflag: flag for noise term, add noise when nflag = 1, 
 %           no noise otherwise            
-%   Output: c: a signed nbit fixed-point number
+%   Output: c: a signed 2*nbit fixed-point number
     T1 = numerictype(1,2*nbit+1,2*nbit);
     T2 = numerictype(1,nbit+1,nbit);
     

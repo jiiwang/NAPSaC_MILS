@@ -8,10 +8,9 @@ rng("twister");
 ntrial = 200;
 n = 500;
 x = zeros(n,2);
-y1 = zeros(n,ntrial);
-y2 = zeros(n,ntrial);
+y = zeros(n,ntrial);
 
-nbit = 5;
+nbit = 8;
 T1 = numerictype(1,2*nbit+1, 2*nbit);
 T2 = numerictype(1,nbit+1,nbit);
 
@@ -26,44 +25,37 @@ for i = 1:n
 
     for j = 1:ntrial
 
-        c_2n_no = noisy_mul(a, b, 2*nbit, 2*nbit, 1);
+        c_bs_2n = bs_orig_mul(a, b, nbit);
 
-        c_bs_2n_no = bs_mul(a, b, nbit, nbit, 1);
-         
-        err1 = c_2n.double-c_2n_no.double;
-
-        err2 = c_2n.double-c_bs_2n_no.double;
+        err = c_2n.double-c_bs_2n.double;
         
-        y1(i, j) = err1;
-        y2(i, j) = err2;
+        y(i, j) = err;
     end
     
 end
 
-y1 = mean(y1,2);
-y2 = mean(y2,2);
+y = mean(y,2);
 
 figure;
 set(gcf,'position',[300,300,1600,800]);
-histogram(y1);
-hold on;
-histogram(y2, 15);
-xline(2^-10, 'y', 'LineWidth', 1.5);
-xline(2^-8, '-r', 'LineWidth', 1.5);
-leg = legend('$c_{10}-\widehat{c_{10}}$', '$c_{10}-\widehat{c_{10}^s}$', ...
-    '$2^{-10}$', '$2^{-8}$');
+histogram(y, 15);
+xline(2^-16, '-r', 'LineWidth', 1.5);
+% xline(2^-11, '-y', 'LineWidth', 1.5);
+% xline(2^-10, '-r', 'LineWidth', 1.5);
+
+leg = legend('$c_{16}-{c_{16}^s}$', '$2^{-16}$');
 set(leg,'Interpreter','latex');
 set(leg,'FontSize',30);
 set(leg, 'Location','northwest');
 % 'Orientation','horizontal');
-ylim([0,150]);
+ylim([0,n]);
 % xlim([-10*10^-4, 10*10^-4]);
 xlabel('error')
 ylabel('count')
 ax = gca; 
 ax.FontSize = 30; 
 box on;
-% exportgraphics(gcf, '16_vs_16no_vs_16bs_mul_err_count.pdf', 'ContentType', 'vector');
+exportgraphics(gcf, '16_vs_16bs_orig_mul_err_count.pdf', 'ContentType', 'vector');
 
 % [v1, e1] = histcounts(y1,'BinWidth',10^-4);
 % [v2, e2] = histcounts(y2,'BinWidth',10^-4);
