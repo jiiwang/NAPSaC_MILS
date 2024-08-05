@@ -1,11 +1,11 @@
 addpath('src/util/')
 
 figure;
-set(gcf,'position',[100,100,1000,500]);
+set(gcf,'position',[100,100,1200,600]);
 
 phi = linspace(-pi,pi,1000);
 r1 = .9;
-r2 = .9;
+r2 = .8;
 alpha = .98;
 y = transfer(phi, r1, r2, alpha);
 
@@ -13,17 +13,17 @@ plot(phi, y, LineWidth=2);
 hold on;
 
 point3 = [0, transfer(0,r1, r2, alpha)];
-text(point3(1), point3(2), sprintf('(%d,%.3f)',point3), 'FontSize', 15, 'Horiz','right', 'Vert','bottom');
+text(point3(1), point3(2), sprintf('(%d,%.3f)',point3), 'FontSize', 20, 'Horiz','right', 'Vert','bottom');
 point4 = [1, transfer(1,r1, r2, alpha)];
-text(point4(1), point4(2), sprintf('(%d,%.3f)',point4), 'FontSize', 15, 'Horiz','right', 'Vert','bottom');
+text(point4(1), point4(2), sprintf('(%d,%.3f)',point4), 'FontSize', 20, 'Horiz','right', 'Vert','bottom');
 plot(point3(1), point3(2), 'or', 'MarkerFaceColor','r');
 hold on;
 plot(point4(1), point4(2), 'or', 'MarkerFaceColor','r');
 
-leg1 = legend('$f(\phi, r_1, r_2, \alpha) (r_1 = 0.9, r_2 = 0.9, \alpha = 0.98)$');
-set(leg1,'Interpreter','latex');
-set(leg1,'FontSize',20);
-set(leg1, 'Location','southeast');
+leg = legend('$f(\phi, r_1, r_2, \alpha) (r_1 = 0.9, r_2 = 0.8, \alpha = 0.98)$');
+set(leg,'Interpreter','latex');
+set(leg,'FontSize',20);
+set(leg, 'Location','southeast');
 xlabel('$\phi$', 'Interpreter','latex', 'FontSize',25);
 ylabel('$y$', 'Interpreter','latex', 'FontSize',25);
 ylim([0,1]);
@@ -65,4 +65,4 @@ box on;
 % ax = gca; 
 % ax.FontSize = 20; 
 
-exportgraphics(gcf, 'affinemap_transferfun.pdf', 'ContentType', 'vector');
+exportgraphics(gcf, 'transferfun_4.pdf', 'ContentType', 'vector');
