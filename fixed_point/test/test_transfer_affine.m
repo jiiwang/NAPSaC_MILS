@@ -5,8 +5,8 @@ set(gcf,'position',[100,100,1500,500]);
 
 subplot(1,2,1);
 x = linspace(0,1,500);
-beta = .66;
-gamma = .26;
+beta = .61;
+gamma = .34;
 y1 = affmap(x,beta,gamma);
 yyaxis right;
 plot(x, y1);
@@ -21,7 +21,7 @@ hold on;
 plot(point2(1), point2(2), 'or', 'MarkerFaceColor','r');
 
 
-leg1 = legend('$g(x, \beta, \gamma) (\beta = 0.66, \gamma = 0.26)$');
+leg1 = legend('$g(x; \beta, \gamma) (\beta = 0.61, \gamma = 0.34)$');
 set(leg1,'Interpreter','latex');
 set(leg1,'FontSize',20);
 set(leg1, 'Location','southeast');
@@ -37,8 +37,8 @@ subplot(1,2,2);
 
 phi = linspace(0,pi,500);
 r1 = .9;
-r2 = .85;
 alpha = .98;
+r2 = r1/alpha;
 y = transfer(phi, r1, r2, alpha);
 
 plot(phi, y, LineWidth=2);
@@ -52,7 +52,7 @@ plot(point3(1), point3(2), 'or', 'MarkerFaceColor','r');
 hold on;
 plot(point4(1), point4(2), 'or', 'MarkerFaceColor','r');
 
-leg1 = legend('$f(\phi, r_1, r_2, \alpha) (r_1 = 0.9, r_2 = 0.85, \alpha = 0.98)$');
+leg1 = legend('$f(\phi; r_1, r_2, \alpha) (r_1 = 0.9, r_2 = r_1/\alpha, \alpha = 0.98)$');
 set(leg1,'Interpreter','latex');
 set(leg1,'FontSize',20);
 set(leg1, 'Location','southeast');
@@ -61,7 +61,7 @@ ylabel('$y$', 'Interpreter','latex', 'FontSize',25);
 ylim([0,1]);
 ax = gca; 
 ax.FontSize = 20; 
-title('Transfer function');
+title('Transfer function Tpass');
 box on;
 
 % figure;
@@ -97,4 +97,4 @@ box on;
 % ax = gca; 
 % ax.FontSize = 20; 
 
-exportgraphics(gcf, 'affinemap_transferfun.pdf', 'ContentType', 'vector');
+exportgraphics(gcf, 'affinemap_transferfun2.pdf', 'ContentType', 'vector');

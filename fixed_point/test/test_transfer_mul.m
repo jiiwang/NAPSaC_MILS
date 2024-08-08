@@ -1,20 +1,32 @@
+addpath('src/trf/');
+
+% random seed, for reproducible results
+rng("twister");
+
 % # of trials per run
-ntrial = 100;
+ntrial = 200;
 % # of runs
 n = 500;
 x = zeros(n,2);
-y = zeros(n,1);
-y1 = zeros(n,ntrial);
-y2 = zeros(n,ntrial);
+% y = zeros(n,1);
+% y1 = zeros(n,ntrial);
+% y2 = zeros(n,ntrial);
+y = zeros(n,ntrial);
 
 nbit = 8;
 T = numerictype(1,nbit+1,nbit);
 
-r1 = 0.9;
-r2 = 0.85;
-alpha = 0.98;
-beta = 0.66;
-gamma = 0.26;
+% r1 = 0.9;
+% alpha = 0.98;
+% r2 = alpha*r1;
+% beta = 0.67;
+% gamma = 0.27;
+
+r1 = .9;
+alpha = .98;
+r2 = r1/alpha;
+beta = .61;
+gamma = .34;
 
 for i = 1:n
     i
@@ -22,7 +34,7 @@ for i = 1:n
     b = rand(1);
 
     c_8 = fi_mul(a,b,T);
-    y(i) = c_8;
+    % y(i) = c_8;
 
     for j = 1:ntrial
 
@@ -30,40 +42,46 @@ for i = 1:n
     
         c_8_tran_no = transfer_mul(a, b, nbit, nbit, r1, r2, alpha, beta, gamma, 1);
     
-        err1 = c_8.double-c_8_no.double;
-        
-        err2 = c_8.double-c_8_tran_no.double;
-        
-        y1(i, j) = err1;
-        y2(i, j) = err2;
+        % err1 = c_8.double-c_8_no.double;
+        % 
+        % err2 = c_8.double-c_8_tran_no.double;
+        % 
+        % y1(i, j) = err1;
+        % y2(i, j) = err2;
+        err = c_8_no.double - c_8_tran_no.double;
+        y(i,j) = err;
     end
     
 end
 
-y1 = mean(y1,2);
-y2 = mean(y2,2);
+% y1 = mean(y1,2);
+% y2 = mean(y2,2);
+y = mean(y,2);
 
 figure;
 set(gcf,'position',[300,300,1600,800]);
-histogram(y1);
-hold on;
-histogram(y2);
+% histogram(y1);
+% hold on;
+% histogram(y2);
+histogram(y);
 xline(2^-8, '-r', 'LineWidth', 1.5);
 xline(2^-7, '-y', 'LineWidth', 1.5);
 xline(2^-6, 'LineWidth', 1.5);
-leg1 = legend('$c_{8}-\widehat{c_{8}}$', ...
-     '$c_{8}-\widetilde{c_{8}}$', '$2^{-8}$', '$2^{-7}$', '$2^{-6}$');
-set(leg1,'Interpreter','latex');
-set(leg1,'FontSize',30);
-set(leg1, 'Location','northwest');
+leg = legend('$\widehat{c_{8}} - \widetilde{c_{8}}$', ...
+    '$2^{-8}$', '$2^{-7}$', '$2^{-6}$');
+% leg = legend('$\widehat{c_{5}} - \widetilde{c_{5}}$', ...
+%     '$2^{-5}$', '$2^{-4}$', '$2^{-3}$');
+set(leg,'Interpreter','latex');
+set(leg,'FontSize',30);
+set(leg, 'Location','northwest');
 % 'Orientation','horizontal');
-ylim([0,150]);
+ylim([0,100]);
 xlabel('error')
 ylabel('count')
 ax = gca; 
 ax.FontSize = 30; 
 box on;
-% exportgraphics(gcf, 'transfer_mul_err_count.pdf', 'ContentType', 'vector');
+exportgraphics(gcf, 'c8no_vs_c8trf_2.pdf', 'ContentType', 'vector');
 
 % [v1, e1] = histcounts(y1,'BinWidth',10^-3);
 % [v2, e2] = histcounts(y2,'BinWidth',10^-3);

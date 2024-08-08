@@ -5,8 +5,8 @@ set(gcf,'position',[100,100,1200,600]);
 
 phi = linspace(-pi,pi,1000);
 r1 = .9;
-r2 = .8;
 alpha = .98;
+r2 = r1/alpha;
 y = transfer(phi, r1, r2, alpha);
 
 plot(phi, y, LineWidth=2);
@@ -20,7 +20,7 @@ plot(point3(1), point3(2), 'or', 'MarkerFaceColor','r');
 hold on;
 plot(point4(1), point4(2), 'or', 'MarkerFaceColor','r');
 
-leg = legend('$f(\phi, r_1, r_2, \alpha) (r_1 = 0.9, r_2 = 0.8, \alpha = 0.98)$');
+leg = legend('$f(\phi; r_1, r_2, \alpha) (r_1 = 0.9, r_2 = r_1/\alpha, \alpha = 0.98)$');
 set(leg,'Interpreter','latex');
 set(leg,'FontSize',20);
 set(leg, 'Location','southeast');
@@ -29,7 +29,7 @@ ylabel('$y$', 'Interpreter','latex', 'FontSize',25);
 ylim([0,1]);
 ax = gca; 
 ax.FontSize = 20; 
-% title('Transfer function');
+% title('Transfer function Tpass');
 box on;
 
 % figure;
@@ -65,4 +65,4 @@ box on;
 % ax = gca; 
 % ax.FontSize = 20; 
 
-exportgraphics(gcf, 'transferfun_4.pdf', 'ContentType', 'vector');
+exportgraphics(gcf, 'tpass2.pdf', 'ContentType', 'vector');
