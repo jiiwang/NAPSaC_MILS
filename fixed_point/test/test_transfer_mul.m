@@ -1,7 +1,9 @@
 addpath('src/trf/');
+addpath('src/util');
+addpath('src/nbit_fi/');
 
 % random seed, for reproducible results
-rng("twister");
+% rng("twister");
 
 % # of trials per run
 ntrial = 200;
@@ -38,9 +40,9 @@ for i = 1:n
 
     for j = 1:ntrial
 
-        c_8_no = noisy_mul(a, b, nbit, nbit, 1);
+        c_8_no = noisy_mul(a, b, nbit+2, nbit, 1);
     
-        c_8_tran_no = transfer_mul(a, b, nbit, nbit, r1, r2, alpha, beta, gamma, 1);
+        c_8_tran_no = transfer_mul(a, b, nbit+2, nbit, r1, r2, alpha, beta, gamma, 1);
     
         % err1 = c_8.double-c_8_no.double;
         % 
@@ -64,11 +66,14 @@ set(gcf,'position',[300,300,1600,800]);
 % hold on;
 % histogram(y2);
 histogram(y);
-xline(2^-8, '-r', 'LineWidth', 1.5);
-xline(2^-7, '-y', 'LineWidth', 1.5);
-xline(2^-6, 'LineWidth', 1.5);
+xline(2^-8, '-r', 'LineWidth', 2.5);
+xline(2^-7, '-y', 'LineWidth', 2.5);
+xline(2^-6, 'LineWidth', 2.5);
+xline(-2^-8, '-r', 'LineWidth', 2.5);
+xline(-2^-7, '-y', 'LineWidth', 2.5);
+xline(-2^-6, 'LineWidth', 2.5);
 leg = legend('$\widehat{c_{8}} - \widetilde{c_{8}}$', ...
-    '$2^{-8}$', '$2^{-7}$', '$2^{-6}$');
+    '$2^{-8}$', '$2^{-7}$', '$2^{-6}$', '$-2^{-8}$', '$-2^{-7}$', '$-2^{-6}$');
 % leg = legend('$\widehat{c_{5}} - \widetilde{c_{5}}$', ...
 %     '$2^{-5}$', '$2^{-4}$', '$2^{-3}$');
 set(leg,'Interpreter','latex');
@@ -81,7 +86,7 @@ ylabel('count')
 ax = gca; 
 ax.FontSize = 30; 
 box on;
-exportgraphics(gcf, 'c8no_vs_c8trf_2.pdf', 'ContentType', 'vector');
+exportgraphics(gcf, 'c8no_vs_c8trf_3.pdf', 'ContentType', 'vector');
 
 % [v1, e1] = histcounts(y1,'BinWidth',10^-3);
 % [v2, e2] = histcounts(y2,'BinWidth',10^-3);
