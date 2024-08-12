@@ -1,10 +1,11 @@
-function c = noisy_mul(a,b,nDAC,nbit,nflag)
-%NOISY_MUL performs a*b operation based on the 5-step noisy model.  
+function c = simple_transfer_mul(a,b,nDAC,nbit,r1,r2,alpha, nflag)
+%TRANSFER_MUL performs a*b operation based on the 5-step transfer model.  
 %   Input:  a: a floating-point number
 %           b: a floating-point number
 %           nDAC: number of bits for the DAC/ADC noise
 %           nbit: number of bits for the optical noise/overall bits of the
 %           device
+%           r1, r2, alpha: parameter for the transfer function
 %           nflag: flag for noise term, add noise when nflag = 1, 
 %           no noise otherwise 
 %   Output: c: a signed nbit fixed-point number
@@ -12,7 +13,9 @@ function c = noisy_mul(a,b,nDAC,nbit,nflag)
 
     amax = 1;
     amin = 0;
-    
+
+    beta = pi/2;
+
     sigma = 0; 
     k = 0;
 
@@ -22,19 +25,28 @@ function c = noisy_mul(a,b,nDAC,nbit,nflag)
         sigma = 0.98*(amax-amin)/2^(nDAC+2);
         
         % Parameter for optical noise, the standard deviation is k*sqrt(a op b)
-        k = (amax-amin)/2^(nbit+2);
+        k = beta*(amax-amin)/2^(nbit+2);
     end
 
-    % Step 1: Digital quantization
-    aD = trun(a, T).double; 
-    bD = trun(b, T).double; 
+    % Step 1: digital quantization    
+    aq = trun(a, T).double; 
+    bq = trun(b, T).double; 
     
     % Step 2: Add DAC noise
-    aDAC = aD + noise(sigma);
-    bDAC = bD + noise(sigma);
+    aDAC = aq + noise(sigma);
+    bDAC = bq + noise(sigma);
+
+    % Step 3: Scaling by pi/2
+    as = beta*aDAC;
+    bs = beta*bDAC;
      
-    % Step 3: Perform multiplication and add optical noise
-    co = aDAC*bDAC + noise(k*sqrt(abs(aDAC*bDAC)));
+    % Step 3: Apply transfer function
+    % perform multiplication and add optical noise
+    a_tran = transfer(as, r1, r2, alpha);
+    b_tran = transfer(bs, r1, r2, alpha);
+
+    c_tran = a_tran*b_tran;
+    co = c_tran + noise(k*sqrt(abs(c_tran)));
     
     % Step 4: Add ADC noise
     cA = co + noise(sigma);
