@@ -18,17 +18,19 @@ T = numerictype(1,nbit+1,nbit);
 % R
 
 % Example 2
-nslice = 3;
-k = .9;
-a = 0.15;
+nslice = 4;
+k = .7;
+a = 0.8;
 a = trun(a,T)
 
 an = ressplit(a,T,nslice,k)
-% r = a;
-% for i=1:nslice
-%     r = r - an(i);
-% end
-% 
-% r
+sum = trun(0,T);
+for i=1:nslice
+    sum = sum + an(i);
+end
+
+sum
+
+err = a - sum
 
 
