@@ -1,6 +1,7 @@
 addpath("src/nbit_fi/")
 addpath("src/util/")
 addpath("src/bs/")
+addpath("src/ta/")
 
 % random seed, for reproducible results
 rng("twister");
@@ -9,7 +10,7 @@ n = 500;
 x = zeros(n,2);
 y = zeros(n,1);
 
-nbit = 5;
+nbit = 8;
 T = numerictype(1,nbit+1,nbit);
 k = 0.9;
 nterm = 3;
@@ -24,7 +25,7 @@ for i = 1:n
 
     c_fi = fi_add(afi,bfi,T);
 
-    c_ta = ta_add(afi,bfi,T,nterm,k);
+    c_ta = ta_add(afi,bfi,T,nterm,k, nbit-2, 1);
 
     err = c_fi.double-c_ta.double;
         
@@ -35,9 +36,10 @@ figure;
 set(gcf,'position',[300,300,1600,800]);
 histogram(y, 15);
 % xline(2^-16, '-r', 'LineWidth', 1.5);
-% xline(2^-8, 'LineWidth', 1.5);
+xline(2^-8, 'LineWidth', 2.5);
+xline(2^-7, '-r', 'LineWidth', 2.5);
 
-leg = legend('$c_{5}-{c_{5}^a}$');
+leg = legend('$c_{8}-{c_{8}^a}$', '$2^{-8}$', '$2^{-7}$');
 set(leg,'Interpreter','latex');
 set(leg,'FontSize',30);
 set(leg, 'Location','northwest');

@@ -18,9 +18,9 @@ T = numerictype(1,nbit+1,nbit);
 % R
 
 % Example 2
-nslice = 4;
-k = .8;
-a = 0.9;
+nslice = 5;
+k = .7;
+a = 0.4;
 a = trun(a,T)
 
 an = ressplit(a,T,nslice,k)
