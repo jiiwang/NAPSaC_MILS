@@ -1,5 +1,5 @@
-function An = ressplit(A,T,k,nterm)
-%RESSPLIT splits n-by-n matrix A into nterms such that 
+function An = ressplit2(A,T,k,nterm,nbit)
+%RESSPLIT2 splits n-by-n matrix A into nterms such that 
 %   A = kR1 + kR2 + ... + kRnterm or equivalently
 %   A = A1 + A2 + ... + Anterm
 %   Input: A: n-by-n matrix of numeritype T
@@ -12,13 +12,13 @@ function An = ressplit(A,T,k,nterm)
     An = zeros(n,n*nterm);
     An = trun(An,T);
 
-    % amax = 1;
-    % amin = 0;
-    % 
-    % sigma = 0.98*(amax-amin)/2^(nbit+2);
+    amax = 1;
+    amin = 0;
+
+    sigma = 0.98*(amax-amin)/2^(nbit-1);
 
     for i=1:nterm
-        Ai = trun(k.*R, T);
+        Ai = trun(k.*R + noise(sigma),T);
         R = trun(R-Ai,T);
         An(:,(i-1)*n+1:i*n) = Ai;
     end

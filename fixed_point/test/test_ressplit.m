@@ -2,35 +2,52 @@ nbit = 8;
 T = numerictype(1,nbit+1,nbit);
 
 % Example 1
-% n = 2;
-% nslice = 3;
+% n = 5;
+% nterm = 3;
 % k = .9;
-% A = [0.3,0.7;0.9,0.6];
-% A = trun(A,T);
+% A = hilbert(n,T)
 % 
-% An = ressplit(A,T,nslice,k);
+% An = ressplit(A,T,k,nterm);
 % 
-% R = A;
-% for i=1:nslice
-%     R = R - An(:,(i-1)*n+1:i*n);
+% sum = zeros(n);
+% for i=1:nterm
+%     sum = sum + An(:,(i-1)*n+1:i*n);
 % end
 % 
-% R
+% sum
+% err = abs(A - sum)
 
 % Example 2
-nslice = 5;
-k = .7;
-a = 0.4;
+% nterm = 4;
+% k = .9;
+% a = 0.9;
+% a = trun(a,T)
+% 
+% an = ressplit(a,T,k,nterm)
+% sum = trun(0,T);
+% for i=1:nterm
+%     sum = sum + an(i);
+% end
+% 
+% sum
+% 
+% err = abs(a - sum)
+
+% Example 3
+nterm = 4;
+k = .9;
+a = 0.9;
 a = trun(a,T)
 
-an = ressplit(a,T,nslice,k,nbit)
+an = ressplit2(a,T,k,nterm,nbit)
+bin = an.bin
 sum = trun(0,T);
-for i=1:nslice
+for i=1:nterm
     sum = sum + an(i);
 end
 
 sum
 
-err = a - sum
+err = abs(a - sum)
 
 
