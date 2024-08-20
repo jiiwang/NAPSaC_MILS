@@ -1,18 +1,24 @@
-function An = ressplit(A,T,nslice,k)
-%RESSPLIT splits n-by-n matrix A into nslices such that 
-%   A = kR1 + kR2 + ... + kRnslice or equivalently
-%   A = A1 + A2 + ... + Anslice
+function An = ressplit(A,T,nterm,k, nbit)
+%RESSPLIT splits n-by-n matrix A into nterms such that 
+%   A = kR1 + kR2 + ... + kRnterm or equivalently
+%   A = A1 + A2 + ... + Anterm
 %   Input: A: n-by-n matrix of numeritype T
 %          T: numeritype for fixed-point numbers
-%          nslice: number of slices to split A
+%          nterm: number of terms to split A
 %          k: ratio paramter
-%   Output: An = [A1 A2 ... Anslice] n-by-n*nslice matrix 
+%   Output: An = [A1 A2 ... Anterm] n-by-n*nterm matrix 
     R = A;
     n = size(A,1);
-    An = zeros(n,n*nslice);
+    An = zeros(n,n*nterm);
     An = trun(An,T);
-    for i=1:nslice
-        Ai = trun(k.*R, T);
+
+    amax = 1;
+    amin = 0;
+    
+    sigma = 0.98*(amax-amin)/2^(nbit+2);
+
+    for i=1:nterm
+        Ai = trun(k.*R + noise(sigma), T);
         R = trun(R-Ai,T);
         An(:,(i-1)*n+1:i*n) = Ai;
     end

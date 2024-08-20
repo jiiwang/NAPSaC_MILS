@@ -23,7 +23,7 @@ k = .7;
 a = 0.4;
 a = trun(a,T)
 
-an = ressplit(a,T,nslice,k)
+an = ressplit(a,T,nslice,k,nbit)
 sum = trun(0,T);
 for i=1:nslice
     sum = sum + an(i);

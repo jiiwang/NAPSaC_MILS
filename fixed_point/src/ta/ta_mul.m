@@ -10,8 +10,8 @@ function c = ta_mul(a,b,T,nterm,k,nbit,nflag)
 %          nflag: flag for noise term, add noise when nflag = 1, 
 %          no noise otherwise 
 %   Output: c: fixed-point scalar of T type
-    an = ressplit(a,T,nterm,k);
-    bn = ressplit(b,T,nterm,k);
+    an = ressplit(a,T,nterm,k,nbit);
+    bn = ressplit(b,T,nterm,k,nbit);
     cn = zeros(nterm,nterm);
 
     amax = 1;
