@@ -12,8 +12,8 @@ T = numerictype(1,nbit+1,nbit);
 n = 100;
 for dim = 5:5:n
     dim
-    k = .9;
-    nterm = 2;
+    k = .7;
+    nterm = 4;
     A = hilbert(dim,T);
 
     ntrial = 50;

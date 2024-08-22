@@ -19,8 +19,8 @@ nbit = 5;
 T = numerictype(1,nbit+1,nbit);
 
 r1 = .9;
-alpha = .95;
-r2 = r1;
+alpha = .98;
+r2 = r1/alpha;
 
 for i = 1:n
     i

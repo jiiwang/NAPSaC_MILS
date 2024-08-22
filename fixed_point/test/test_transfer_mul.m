@@ -26,9 +26,9 @@ T = numerictype(1,nbit+1,nbit);
 
 r1 = .9;
 alpha = .98;
-r2 = r1/alpha;
-beta = .61;
-gamma = .34;
+r2 = r1*alpha;
+beta = .9;
+gamma = 0.03;
 
 for i = 1:n
     i
@@ -74,8 +74,14 @@ xline(-2^-7, '-y', 'LineWidth', 2.5);
 xline(-2^-6, 'LineWidth', 2.5);
 leg = legend('$\widehat{c_{8}} - \widetilde{c_{8}}$', ...
     '$2^{-8}$', '$2^{-7}$', '$2^{-6}$', '$-2^{-8}$', '$-2^{-7}$', '$-2^{-6}$');
+% xline(2^-5, '-r', 'LineWidth', 2.5);
+% xline(2^-4, '-y', 'LineWidth', 2.5);
+% xline(2^-3, 'LineWidth', 2.5);
+% xline(-2^-5, '-r', 'LineWidth', 2.5);
+% xline(-2^-4, '-y', 'LineWidth', 2.5);
+% xline(-2^-3, 'LineWidth', 2.5);
 % leg = legend('$\widehat{c_{5}} - \widetilde{c_{5}}$', ...
-%     '$2^{-5}$', '$2^{-4}$', '$2^{-3}$');
+%     '$2^{-5}$', '$2^{-4}$', '$2^{-3}$', '$-2^{-5}$', '$-2^{-4}$', '$-2^{-3}$');
 set(leg,'Interpreter','latex');
 set(leg,'FontSize',30);
 set(leg, 'Location','northwest');
@@ -86,7 +92,7 @@ ylabel('count')
 ax = gca; 
 ax.FontSize = 30; 
 box on;
-exportgraphics(gcf, 'c8no_vs_c8trf_3.pdf', 'ContentType', 'vector');
+% exportgraphics(gcf, 'c5no_vs_c5trf_2.pdf', 'ContentType', 'vector');
 
 % [v1, e1] = histcounts(y1,'BinWidth',10^-3);
 % [v2, e2] = histcounts(y2,'BinWidth',10^-3);

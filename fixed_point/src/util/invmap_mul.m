@@ -3,7 +3,11 @@ function y = invmap_mul(c,a,b,beta,gamma)
 %   Input:   c: scalar multiplication of a and b in optical device
 %            a, b: input of scalar/vector/matrix type
 %            beta, gamma: parameters for the affine map
-%   Output:  y: output of scalar/vector/matrix type   
-    y = (c - gamma^2 - beta*gamma*(a+b))./(beta^2);
+%   Output:  y: output of scalar/vector/matrix type
+    if gamma == 0
+        y = c./(beta^2);
+    else
+        y = (c - gamma^2 - beta*gamma*(a+b))./(beta^2);
+    end
 end
 

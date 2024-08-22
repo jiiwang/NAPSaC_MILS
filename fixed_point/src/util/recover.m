@@ -6,7 +6,7 @@ function phi = recover(y,r1,r2,alpha)
 %            alpha: ossy/lossless parameter (alpha < 1 for lossy case, 
 %            alpha = 1 for lossless case)
 %   Output:  phi: output of scalar/vector/matrix type
-    phi1 = r1^2 + r2^2*alpha - y - r1^2*r2^2*alpha*y;
+    phi1 = r1^2 + r2^2*alpha^2 - y - r1^2*r2^2*alpha^2*y;
     phi2 = 2*r1*r2*alpha*(1-y);
     phi = acos(phi1./phi2);
 end
