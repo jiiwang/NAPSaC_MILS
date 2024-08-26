@@ -1,10 +1,9 @@
-function c = bs_transfer_mul(a,b,nDAC,nbit,r1,r2,alpha, beta, gamma, nflag)
+function c = bs_transfer_mul(a,b,nbit,nO,r1,r2,alpha, beta, gamma, nflag)
 %BS_TRANSFER_MUL performs a*b operation based on the 5-step transfer model.  
 %   Input:  a: a floating-point number
 %           b: a floating-point number
-%           nDAC: number of bits for the DAC/ADC noise
-%           nbit: number of bits for the optical noise/overall bits of the
-%           device
+%           nbit: number of bits for the DAC/ADC noise (overal number of bit)
+%           nO: number of bits for the optical noise
 %           r1, r2, alpha: parameter for the transfer function
 %           beta, gamma: parameter for the affine map
 %           nflag: flag for noise term, add noise when nflag = 1, 
@@ -22,10 +21,10 @@ function c = bs_transfer_mul(a,b,nDAC,nbit,r1,r2,alpha, beta, gamma, nflag)
     if nflag == 1
         % Standard deviation for digital to analogue (DAC) and 
         % analogue to digital (ADC) noise
-        sigma = 0.98*(amax-amin)/2^(nDAC+2);
+        sigma = 0.98*(amax-amin)/2^(nbit+2);
         
         % Parameter for optical noise, the standard deviation is k*sqrt(a op b)
-        k = (amax-amin)/2^(nbit+2);
+        k = (amax-amin)/2^(nO+2);
     end
     
     % Step 1: Digital bit-slicing

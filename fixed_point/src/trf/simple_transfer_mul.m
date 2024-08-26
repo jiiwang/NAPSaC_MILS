@@ -1,15 +1,14 @@
-function c = simple_transfer_mul(a,b,nDAC,nbit,r1,r2,alpha, nflag)
+function c = simple_transfer_mul(a,b,nbit,nO,r1,r2,alpha, nflag)
 %TRANSFER_MUL performs a*b operation based on the 5-step transfer model.  
 %   Input:  a: a floating-point number
 %           b: a floating-point number
-%           nDAC: number of bits for the DAC/ADC noise
-%           nbit: number of bits for the optical noise/overall bits of the
-%           device
+%           nbit: number of bits for the DAC/ADC noise (overall number of bits)
+%           nO: number of bits for the optical noise
 %           r1, r2, alpha: parameter for the transfer function
 %           nflag: flag for noise term, add noise when nflag = 1, 
 %           no noise otherwise 
 %   Output: c: a signed nbit fixed-point number
-    T = numerictype(1,nDAC+1,nDAC);
+    T = numerictype(1,nbit+1,nbit);
 
     amax = 1;
     amin = 0;
@@ -22,10 +21,10 @@ function c = simple_transfer_mul(a,b,nDAC,nbit,r1,r2,alpha, nflag)
     if nflag == 1
         % Standard deviation for digital to analogue (DAC) and 
         % analogue to digital (ADC) noise
-        sigma = 0.98*(amax-amin)/2^(nDAC+2);
+        sigma = 0.98*(amax-amin)/2^(nbit+2);
         
         % Parameter for optical noise, the standard deviation is k*sqrt(a op b)
-        k = beta*(amax-amin)/2^(nbit+2);
+        k = beta*(amax-amin)/2^(nO+2);
     end
 
     % Step 1: digital quantization    

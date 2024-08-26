@@ -1,10 +1,9 @@
-function c = bs_mul(a,b,nDAC,nbit,nflag)
-%BS_MUL performs a*b operation based on the 6-step bit-slicing noisy model.  
+function c = bs_mul(a,b,nbit,nO,nflag)
+%BS_MUL performs a*b operation based on the bit-slicing noisy model.  
 %   Input:  a: a floating-point number
 %           b: a floating-point number
-%           nDAC: number of bits for the DAC/ADC noise
-%           nbit: number of bits for the optical noise/overall bits of the
-%           device
+%           nbit: number of bits for the DAC/ADC noise (overal number of bit)
+%           nO: number of bits for the optical noise
 %           nflag: flag for noise term, add noise when nflag = 1, 
 %           no noise otherwise            
 %   Output: c: a signed 2*nbit fixed-point number
@@ -20,10 +19,10 @@ function c = bs_mul(a,b,nDAC,nbit,nflag)
     if nflag == 1
         % Standard deviation for digital to analogue (DAC) and 
         % analogue to digital (ADC) noise
-        sigma = 0.98*(amax-amin)/2^(nDAC+2);
+        sigma = 0.98*(amax-amin)/2^(nbit+2);
         
         % Parameter for optical noise, the standard deviation is k*sqrt(a op b)
-        k = (amax-amin)/2^(nbit+2);
+        k = (amax-amin)/2^(nO+2);
     end
     
     % Step 1: Digital bit-slicing and quantization
