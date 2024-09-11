@@ -9,12 +9,12 @@ addpath('src/bs_trf/')
 rng(1,"twister");
 
 % # of trials per run
-ntrial = 100;
+ntrial = 200;
 % # of runs
 n = 500;
 y = zeros(n,ntrial);
 
-nbit = 5;
+nbit = 8;
 T1 = numerictype(1,2*nbit+1, 2*nbit);
 T2 = numerictype(1,nbit+1,nbit);
 
@@ -32,8 +32,8 @@ gamma = 0;
 
 for i = 1:n
     i
-    a = rand(1);
-    b = rand(1);
+    a = 0.9*rand(1);
+    b = 0.9*rand(1);
 
 
     for j = 1:ntrial
@@ -53,21 +53,21 @@ y = mean(y, 2);
 figure;
 set(gcf,'position',[300,300,1600,800]);
 histogram(y);
-% xline(2^-8, '-r', 'LineWidth', 2.5);
-% xline(2^-7, '-y', 'LineWidth', 2.5);
-% xline(-2^-8, '-r', 'LineWidth', 2.5);
-% xline(-2^-7, '-y', 'LineWidth', 2.5);
-% leg1 = legend('$\widehat{c_{16}} - \widetilde{c_{16}^s}$', ...
-%     '$2^{-8}$', '$2^{-7}$', ...
-%     '$-2^{-8}$', '$-2^{-7}$');
+xline(2^-8, '-r', 'LineWidth', 2.5);
+xline(2^-7, '-y', 'LineWidth', 2.5);
+xline(-2^-8, '-r', 'LineWidth', 2.5);
+xline(-2^-7, '-y', 'LineWidth', 2.5);
+leg1 = legend('$\widehat{c_{16}} - \widetilde{c_{16}^s}$', ...
+    '$2^{-8}$', '$2^{-7}$', ...
+    '$-2^{-8}$', '$-2^{-7}$');
 
-xline(2^-5, '-r', 'LineWidth', 2.5);
-xline(2^-4, '-y', 'LineWidth', 2.5);
-xline(-2^-5, '-r', 'LineWidth', 2.5);
-xline(-2^-4, '-y', 'LineWidth', 2.5);
-leg1 = legend('$\widehat{c_{10}} - \widetilde{c_{10}^s}$', ...
-    '$2^{-5}$', '$2^{-4}$', ...
-    '$-2^{-5}$', '$-2^{-4}$');
+% xline(2^-5, '-r', 'LineWidth', 2.5);
+% xline(2^-4, '-y', 'LineWidth', 2.5);
+% xline(-2^-5, '-r', 'LineWidth', 2.5);
+% xline(-2^-4, '-y', 'LineWidth', 2.5);
+% leg1 = legend('$\widehat{c_{10}} - \widetilde{c_{10}^s}$', ...
+%     '$2^{-5}$', '$2^{-4}$', ...
+%     '$-2^{-5}$', '$-2^{-4}$');
 
 set(leg1,'Interpreter','latex');
 set(leg1,'FontSize',30);
@@ -79,4 +79,4 @@ ylabel('count')
 ax = gca; 
 ax.FontSize = 30; 
 box on;
-% s
+% exportgraphics(gcf, 'bs_transfer_mul_err_count_n=8+8.pdf', 'ContentType', 'vector');

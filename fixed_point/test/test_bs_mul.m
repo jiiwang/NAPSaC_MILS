@@ -11,7 +11,7 @@ ntrial = 100;
 n = 500;
 y = zeros(n,ntrial);
 
-nbit = 5;
+nbit = 4;
 T1 = numerictype(1,2*nbit+1, 2*nbit);
 T2 = numerictype(1,nbit+1,nbit);
 

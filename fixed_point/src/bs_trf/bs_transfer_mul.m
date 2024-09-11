@@ -33,15 +33,16 @@ function c = bs_transfer_mul(a,b,nbit,nO,r1,r2,alpha, beta, gamma, nflag)
 
     % Step 2: affine map, apply recover function, and digital quantization
     % affmap inputs should be double
-    a1map = affmap(a1.double,beta, gamma);
-    b1map = affmap(b1.double,beta, gamma);
-    a2map = affmap(a2.double,beta, gamma);
-    b2map = affmap(b2.double,beta, gamma);
 
-    a1_inv = recover(a1map, r1, r2, alpha);
-    b1_inv = recover(b1map, r1, r2, alpha);
-    a2_inv = recover(a2map, r1, r2, alpha);
-    b2_inv = recover(b2map, r1, r2, alpha);
+    % a1map = affmap(a1.double,beta, gamma);
+    % b1map = affmap(b1.double,beta, gamma);
+    % a2map = affmap(a2.double,beta, gamma);
+    % b2map = affmap(b2.double,beta, gamma);
+
+    a1_inv = recover(a1.double, r1, r2, alpha);
+    b1_inv = recover(b1.double, r1, r2, alpha);
+    a2_inv = recover(a2.double, r1, r2, alpha);
+    b2_inv = recover(b2.double, r1, r2, alpha);
     
     a1_inv = trun(a1_inv, T2).double;
     b1_inv = trun(b1_inv, T2).double;
@@ -83,14 +84,16 @@ function c = bs_transfer_mul(a,b,nbit,nO,r1,r2,alpha, beta, gamma, nflag)
     c21 = trun(c21A, T2);
     c22 = trun(c22A, T2);
     
-    c11 = invmap_mul(c11, a1, b1, beta, gamma);
-    c12 = invmap_mul(c12, a1, b2, beta, gamma);
-    c21 = invmap_mul(c21, a2, b1, beta, gamma);
-    c22 = invmap_mul(c22, a2, b2, beta, gamma);
+    % c11 = invmap_mul(c11A, a1, b1, beta, gamma);
+    % c12 = invmap_mul(c12A, a1, b2, beta, gamma);
+    % c21 = invmap_mul(c21A, a2, b1, beta, gamma);
+    % c22 = invmap_mul(c22A, a2, b2, beta, gamma);
 
     % Step 7: Process the result from 4 multiplications
     % no truncation needed
     c = c11 + 2^-nbit*(c12 + c21) + 2^(-2*nbit)*c22;
+    
+    % c = invmap_mul(c, a, b, beta, gamma);
     
     % Step 8: Digital quantization 
     c = trun(c, T1);
