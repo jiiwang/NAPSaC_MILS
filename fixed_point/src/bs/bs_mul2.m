@@ -20,7 +20,7 @@ function c = bs_mul2(a,b,nbit,nO,nflag)
     if nflag == 1
         % Standard deviation for digital to analogue (DAC) and 
         % analogue to digital (ADC) noise
-        sigma = 0.98*(amax-amin)/2^(2*nbit+2);
+        % sigma = 0.98*(amax-amin)/2^(2*nbit+2);
         
         % Parameter for optical noise, the standard deviation is k*sqrt(a op b)
         k = (amax-amin)/2^(nO+2);

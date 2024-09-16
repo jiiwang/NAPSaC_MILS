@@ -7,7 +7,7 @@ addpath("src/bs/")
 % we can reinitialize and run with the same random values for refining our code
 rng(1,"twister");
 
-ntrial = 100;
+ntrial = 200;
 n = 500;
 y = zeros(n,ntrial);
 
@@ -32,11 +32,11 @@ for i = 1:n
     
 end
 
-y = mean(y,1);
+y2 = mean(y,2);
 
 figure;
 set(gcf,'position',[300,300,1600,800]);
-histogram(y,10);
+histogram(y2);
 % xline(2^-16, '-r', 'LineWidth', 2.5);
 % xline(2^-12, '-y', 'LineWidth', 2.5);
 % xline(2^-11, '-g', 'LineWidth', 2.5);
@@ -46,24 +46,24 @@ histogram(y,10);
 % leg = legend('$\widehat{c_{16}}-\widehat{c_{16}^s}$', ...
 %      '$2^{-16}$', '$2^{-12}$','$2^{-11}$', ...
 %      '$-2^{-16}$', '$-2^{-12}$','$-2^{-11}$');
-xline(2^-10, '-r', 'LineWidth', 2.5);
-xline(2^-9, '-y', 'LineWidth', 2.5);
-xline(2^-8, '-g', 'LineWidth', 2.5);
-xline(-2^-10, '-r', 'LineWidth', 2.5);
-xline(-2^-9, '-y', 'LineWidth', 2.5);
-xline(-2^-8, '-g', 'LineWidth', 2.5);
-leg = legend('$c_{10}-\widehat{c_{10}^s}$', ...
-    '$2^{-10}$', '$2^{-9}$', '$2^{-8}$', ...
-    '$-2^{-10}$', '$-2^{-9}$', '$-2^{-8}$');
+xline(2^-8, '-r', 'LineWidth', 2.5);
+xline(2^-7, '-y', 'LineWidth', 2.5);
+xline(2^-6, '-g', 'LineWidth', 2.5);
+xline(-2^-8, '-r', 'LineWidth', 2.5);
+xline(-2^-7, '-y', 'LineWidth', 2.5);
+xline(-2^-6, '-g', 'LineWidth', 2.5);
+leg = legend('$c_{8}-\widehat{c_{8}^s}$', ...
+    '$2^{-8}$', '$2^{-7}$', '$2^{-6}$', ...
+    '$-2^{-8}$', '$-2^{-7}$', '$-2^{-6}$');
 set(leg,'Interpreter','latex');
 set(leg,'FontSize',40);
 set(leg, 'Location','northwest');
 % 'Orientation','horizontal');
-ylim([0,50]);
+ylim([0,100]);
 % xlim([-10*10^-4, 10*10^-4]);
 xlabel('error')
 ylabel('count')
 ax = gca; 
 ax.FontSize = 30; 
 box on;
-% exportgraphics(gcf, '16no_vs_16bs_mul_err_count.pdf', 'ContentType', 'vector');
+exportgraphics(gcf, '8no_vs_8bs_mul_4+4_err_count.pdf', 'ContentType', 'vector');
