@@ -7,7 +7,7 @@ addpath("src/bs/")
 % we can reinitialize and run with the same random values for refining our code
 rng(1,"twister");
 
-ntrial = 200;
+ntrial = 50;
 n = 500;
 y = zeros(n,ntrial);
 
@@ -60,12 +60,12 @@ set(leg,'Interpreter','latex');
 set(leg,'FontSize',40);
 set(leg, 'Location','northwest');
 % 'Orientation','horizontal');
-ylim([0,150]);
+ylim([0,100]);
 % xlim([-10*10^-4, 10*10^-4]);
 xlabel('error')
 ylabel('count')
 ax = gca; 
 ax.FontSize = 30; 
 box on;
-exportgraphics(gcf, '8no_vs_8bs_mul_2+2+2+2_optical_noise_err_count.pdf', 'ContentType', 'vector');
+exportgraphics(gcf, '8no_vs_8bs_mul_2+2+2+2_DAC_noise_err_count.pdf', 'ContentType', 'vector');
 % exportgraphics(gcf, '16no_vs_16bs_mul_err_count.pdf', 'ContentType', 'vector');
