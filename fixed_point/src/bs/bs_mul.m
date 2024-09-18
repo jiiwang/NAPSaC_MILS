@@ -1,28 +1,31 @@
-function c = bs_mul(a,b,nbit,nO,nflag)
+function c = bs_mul(a,b,nbit,nDAC,nADC,no,nflag)
 %BS_MUL performs a*b operation based on the bit-slicing noisy model.  
 %   Input:  a: a floating-point number
 %           b: a floating-point number
 %           nbit: number of bits for the DAC/ADC noise (overal number of bit)
-%           nO: number of bits for the optical noise
+%           no: number of bits for the optical noise
 %           nflag: flag for noise term, add noise when nflag = 1, 
 %           no noise otherwise            
 %   Output: c: a signed 2*nbit fixed-point number
     T1 = numerictype(1,2*nbit+1,2*nbit);
     T2 = numerictype(1,nbit+1,nbit);
+    T = numerictype(1,nADC+1,nADC);
     
     amax = 1;
     amin = 0;
 
-    sigma = 0; 
+    sigma1 = 0;
+    sigma2 = 0;
     k = 0;
 
     if nflag == 1
         % Standard deviation for digital to analogue (DAC) and 
         % analogue to digital (ADC) noise
-        sigma = 0.98*(amax-amin)/2^(nbit+2);
+        sigma1 = 0.98*(amax-amin)/2^(nDAC+2);
+        sigma2 = 0.98*(amax-amin)/2^(nADC+2);
         
         % Parameter for optical noise, the standard deviation is k*sqrt(a op b)
-        k = (amax-amin)/2^(nO+2);
+        k = (amax-amin)/2^(no+2);
     end
     
     % Step 1: Digital bit-slicing and quantization
@@ -30,10 +33,10 @@ function c = bs_mul(a,b,nbit,nO,nflag)
     [b1, b2] = split(b, T1, T2);
     
     % Step 2: Add DAC noise
-    a1DAC = a1.double + noise(sigma);
-    a2DAC = a2.double + noise(sigma);
-    b1DAC = b1.double + noise(sigma);
-    b2DAC = b2.double + noise(sigma);
+    a1DAC = a1.double + noise(sigma1);
+    a2DAC = a2.double + noise(sigma1);
+    b1DAC = b1.double + noise(sigma1);
+    b2DAC = b2.double + noise(sigma1);
     
     % Step 3: Perform 4 multiplications and add optical noise
 
@@ -50,14 +53,14 @@ function c = bs_mul(a,b,nbit,nO,nflag)
     c22 = c22 + noise(k*sqrt(abs(c22)));
 
     % Step 4: Add ADC noise
-    c11ADC = c11 + noise(sigma);
-    c21ADC = c21 + noise(sigma);
-    c12ADC = c12 + noise(sigma);
-    c22ADC = c22 + noise(sigma);
+    c11ADC = c11 + noise(sigma2);
+    c21ADC = c21 + noise(sigma2);
+    c12ADC = c12 + noise(sigma2);
+    c22ADC = c22 + noise(sigma2);
     
     % Step 5: Digital quantization and process the result from 4
     % multiplications
-    c = trun(c11ADC,T2) + 2^-nbit*(trun(c21ADC, T2)+trun(c12ADC, T2)) + 2^(-2*nbit)*trun(c22ADC,T2);
+    c = trun(c11ADC,T) + 2^-nbit*(trun(c21ADC, T)+trun(c12ADC, T)) + 2^(-2*nbit)*trun(c22ADC,T);
     
     % no truncation
     % c = c11ADC + 2^-nbit*(c21ADC + c12ADC) + 2^(-2*nbit)*c22ADC;
