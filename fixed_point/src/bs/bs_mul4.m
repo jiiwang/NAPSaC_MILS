@@ -1,4 +1,4 @@
-function c = bs_mul2(a,b,nbit,nO,nflag)
+function c = bs_mul4(a,b,nbit,nO,nflag)
 %BS_MUL performs a*b operation based on the bit-slicing noisy model.  
 %   Input:  a: a floating-point number
 %           b: a floating-point number
@@ -23,7 +23,7 @@ function c = bs_mul2(a,b,nbit,nO,nflag)
         sigma = 0.98*(amax-amin)/2^(2*nbit+2);
         
         % Parameter for optical noise, the standard deviation is k*sqrt(a op b)
-%         k = (amax-amin)/2^(nO+2);
+        k = (amax-amin)/2^(nO+2);
     end
     
     % Step 1: Digital bit-slicing and quantization

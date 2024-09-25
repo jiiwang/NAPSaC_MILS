@@ -25,7 +25,7 @@ for i = 1:n
 
         c_2n_no = noisy_mul(a, b, 4*nbit, 4*nbit-2, 1);
 
-        c_bs_2n_no = bs_mul2(a, b, nbit, nbit-2, 1);
+        c_bs_2n_no = bs_mul4(a, b, nbit, nbit-2, 1);
          
         err = c_2n_no.double - c_bs_2n_no.double;
         y(i,j) = err;

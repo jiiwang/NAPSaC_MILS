@@ -1,40 +1,39 @@
 format longE;
-addpath("src/util/")
 
 %% Create fixed-point numeritype object
-nbit = 2;
-T1 = numerictype(1,4*nbit+1, 4*nbit);
-T2 = numerictype(1,2*nbit+1, 2*nbit);
-T3 = numerictype(1,nbit+1,nbit);
+% create a (nbit+1) bit fixed-point numeritype object T1 with 1 bit for sign, 
+% and nbit bits for fractions (target precision)
+nbit = 8;
+T1 = numerictype(1,nbit+1,nbit);
+% create a (pbit+1) bit fixed-point numeritype object T2 with 1 bit for sign, 
+% and pbit bits for fractions (actual precision)
+pbit = 3;
+T2 = numerictype(1,pbit+1,pbit);
+% create a (qbit+1) bit fixed-point numeritype object T3 with 1 bit for sign, 
+% and qbit bits for fractions (actual precision)
+% such that "nbit = pbit + qbit"
+qbit = 5;
+T3 = numerictype(1,qbit+1,qbit);
 
 %% Number generation
-a = rand(1)
+% a = rand(1)
+a = 0.3251
 
-% a in 8-bit fixed point, and its binary representation
+% a in nbit fixed point, and its binary representation
 afi = trun(a, T1)
 
 afi.bin
 
+
 %% Bit slicing
-% splitting a into four n-bit fixed point such that
-% afi = a1 + 2^{-nbit}a2 + 2^{-2*nbit}a3 + 2^{-3*nbit}a4.
-[ah, al] = split(a, T1, T2);
-
-% ah.bin
-% 
-% al.bin
-
-[a1, a2] = split(ah, T2, T3);
-
-[a3, a4] = split(al, T2, T3);
-
+% splitting a into a pbit fixed point number a1 and a qbit fixed point
+% number a2 such that
+% afi = a1 + 2^{-pbit}a2. Show binary representations of a1 and a2
+[a1, a2] = split2(a, T1, T2, T3);
+a1
 a1.bin
-
+a2
 a2.bin
 
-a3.bin
-
-a4.bin
-
 % error: afi - a_bs:
-afi.double - (a1.double + 2^-nbit*a2.double + 2^(-2*nbit)*a3.double + 2^(-3*nbit)*a4.double)
+err = afi.double - (a1.double + 2^-pbit*a2.double)

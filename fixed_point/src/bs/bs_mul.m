@@ -1,14 +1,19 @@
-function c = bs_mul(a,b,nbit,nDAC,nADC,no,nflag)
+function c = bs_mul(a,b,nbit,pbit,qbit,nDAC,nADC,no,nflag)
 %BS_MUL performs a*b operation based on the bit-slicing noisy model.  
 %   Input:  a: a floating-point number
 %           b: a floating-point number
-%           nbit: number of bits for the DAC/ADC noise (overal number of bit)
-%           no: number of bits for the optical noise
+%           nbit: target number of bits
+%           pbit: slice 1 actual number of bits
+%           qbit: slice 2 actual number of bits
+%           nDAC: DAC noise order
+%           nADC: ADC noise order
+%           no: optical noise order
 %           nflag: flag for noise term, add noise when nflag = 1, 
 %           no noise otherwise            
-%   Output: c: a signed 2*nbit fixed-point number
-    T1 = numerictype(1,2*nbit+1,2*nbit);
-    T2 = numerictype(1,nbit+1,nbit);
+%   Output: c: a signed nbit fixed-point number
+    T1 = numerictype(1,nbit+1,nbit);
+    T2 = numerictype(1,pbit+1,pbit);
+    T3 = numerictype(1,qbit+1,qbit);
     T = numerictype(1,nADC+1,nADC);
     
     amax = 1;
@@ -29,8 +34,8 @@ function c = bs_mul(a,b,nbit,nDAC,nADC,no,nflag)
     end
     
     % Step 1: Digital bit-slicing and quantization
-    [a1, a2] = split(a, T1, T2);
-    [b1, b2] = split(b, T1, T2);
+    [a1, a2] = split2(a, T1, T2, T3);
+    [b1, b2] = split2(b, T1, T2, T3);
     
     % Step 2: Add DAC noise
     a1DAC = a1.double + noise(sigma1);
@@ -60,15 +65,9 @@ function c = bs_mul(a,b,nbit,nDAC,nADC,no,nflag)
     
     % Step 5: Digital quantization and process the result from 4
     % multiplications
-    c = trun(c11ADC,T) + 2^-nbit*(trun(c21ADC, T)+trun(c12ADC, T)) + 2^(-2*nbit)*trun(c22ADC,T);
-    
-    % no truncation
-    % c = c11ADC + 2^-nbit*(c21ADC + c12ADC) + 2^(-2*nbit)*c22ADC;
-    
-    % most siginificant part truncates to numerictype T1 (more bits)
-    % c = trun(c11ADC,T1) + 2^-nbit*(trun(c21ADC, T2)+trun(c12ADC, T2)) + 2^(-2*nbit)*trun(c22ADC,T2);
+    c = trun(c11ADC,T) + 2^-pbit*(trun(c21ADC, T)+trun(c12ADC, T)) + 2^(-2*pbit)*trun(c22ADC,T);
 
-    % Step 6: Digital quantization 
+    % Step 6: Digital quantization 9
     c = trun(c, T1);
 end
 
