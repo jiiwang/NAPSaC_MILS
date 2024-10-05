@@ -3,7 +3,7 @@ function phi = recover(y,r1,r2,alpha)
 % It is the exact inverse of the transfer function
 %   Input:   y: input of scalar/vector/matrix type
 %            r1, r2: parameters for the transfer function 
-%            alpha: ossy/lossless parameter (alpha < 1 for lossy case, 
+%            alpha: lossy/lossless parameter (alpha < 1 for lossy case, 
 %            alpha = 1 for lossless case)
 %   Output:  phi: output of scalar/vector/matrix type
     phi1 = r1^2 + r2^2*alpha^2 - y - r1^2*r2^2*alpha^2*y;

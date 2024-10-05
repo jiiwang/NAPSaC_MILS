@@ -1,4 +1,4 @@
-function c = bs_transfer_mul(a,b,nbit,pbit,qbit,nDAC,nADC,no,nflag,r1,r2,alpha,beta,gamma)
+function c = bs_transfer_mul2(a,b,nbit,pbit,qbit,nDAC,nADC,no,nflag,r1,r2,alpha)
 %BS_TRANSFER_MUL performs a*b operation based on the 5-step transfer model.  
 %   Input:  a: a floating-point number
 %           b: a floating-point number
@@ -9,7 +9,6 @@ function c = bs_transfer_mul(a,b,nbit,pbit,qbit,nDAC,nADC,no,nflag,r1,r2,alpha,b
 %           nADC: ADC noise order
 %           no: optical noise order
 %           r1, r2, alpha: parameter for the transfer function
-%           beta, gamma: parameter for the affine map
 %           nflag: flag for noise term, add noise when nflag = 1, 
 %           no noise otherwise 
 %   Output: c: a signed nbit fixed-point number
@@ -40,18 +39,13 @@ function c = bs_transfer_mul(a,b,nbit,pbit,qbit,nDAC,nADC,no,nflag,r1,r2,alpha,b
     [a1, a2] = split2(a, T1, T2, T3);
     [b1, b2] = split2(b, T1, T2, T3);
 
-    % Step 2: affine map, apply recover function, and digital quantization
-    % affmap inputs should be double
+    % Step 2: apply recover function, and digital quantization
+    % recover function inputs should be double
 
-    a1map = affmap(a1.double,beta, gamma);
-    b1map = affmap(b1.double,beta, gamma);
-    a2map = affmap(a2.double,beta, gamma);
-    b2map = affmap(b2.double,beta, gamma);
-
-    a1_inv = recover(a1map, r1, r2, alpha);
-    b1_inv = recover(b1map, r1, r2, alpha);
-    a2_inv = recover(a2map, r1, r2, alpha);
-    b2_inv = recover(b2map, r1, r2, alpha);
+    a1_inv = recover(a1.double, r1, r2, alpha);
+    b1_inv = recover(b1.double, r1, r2, alpha);
+    a2_inv = recover(a2.double, r1, r2, alpha);
+    b2_inv = recover(b2.double, r1, r2, alpha);
     
     a1_inv = trun(a1_inv, Tdac).double;
     b1_inv = trun(b1_inv, Tdac).double;
@@ -87,21 +81,14 @@ function c = bs_transfer_mul(a,b,nbit,pbit,qbit,nDAC,nADC,no,nflag,r1,r2,alpha,b
     c21A = c21o + noise(sigma2);
     c22A = c22o + noise(sigma2);
 
-    % Step 6: Digital quantization and recover of affine mapping
+    % Step 6: Digital quantization
     c11 = trun(c11A, Tadc);
     c12 = trun(c12A, Tadc);
     c21 = trun(c21A, Tadc);
     c22 = trun(c22A, Tadc);
-    
-    % c11 = invmap_mul(c11.double, a1, b1, beta, gamma);
-    % c12 = invmap_mul(c12.double, a1, b2, beta, gamma);
-    % c21 = invmap_mul(c21.double, a2, b1, beta, gamma);
-    % c22 = invmap_mul(c22.double, a2, b2, beta, gamma);
 
     % Step 7: Process the result from 4 multiplications
     c = c11 + 2^-pbit*(c12 + c21) + 2^(-2*pbit)*c22;
-    
-    c = invmap_mul(c, a, b, beta, gamma);
     
     % Step 8: Digital quantization 
     c = trun(c, T1);
