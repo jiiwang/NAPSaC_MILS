@@ -1,5 +1,6 @@
 function c = bs_transfer_mul2(a,b,nbit,pbit,qbit,nDAC,nADC,no,nflag,r1,r2,alpha)
-%BS_TRANSFER_MUL performs a*b operation based on the 5-step transfer model.  
+%BS_TRANSFER_MUL performs a*b operation based on the 5-step transfer model.
+% (NO AFFINE MAP)
 %   Input:  a: a floating-point number
 %           b: a floating-point number
 %           nbit: target number of bits (nbit = pbit + qbit)

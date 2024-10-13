@@ -1,4 +1,4 @@
-function Afi = trun(A,T)
+function Afi = quan(A,T)
 % TRUN converts floating-point scalar/vector/matrix to 
 % a fixed-point data format of desired numerictype T
 %   Input:  A: a floating-point scalar/vector/matrix

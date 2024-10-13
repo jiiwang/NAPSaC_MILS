@@ -45,7 +45,7 @@ for i = 1:n
 
         c_8_no = noisy_mul(a, b, nbit, nbit-2, 1);
     
-        c_8_tran_no = bs_transfer_mul(a,b,nbit,4,4,10,6,6,1,r1,r2,alpha,beta,gamma);
+        c_8_tran_no = bs_transfer_mul(a,b,nbit,3,5,8,6,6,1,r1,r2,alpha,beta,gamma);
     
         err = c_8_no.double - c_8_tran_no.double;
         y(i,j) = err;
@@ -73,11 +73,11 @@ set(leg,'Interpreter','latex');
 set(leg,'FontSize',30);
 set(leg, 'Location','northwest');
 % 'Orientation','horizontal');
-title("n = 8 = 4 + 4, nDAC = 10, no = nADC = 6");
+title("n = 8 = 3 + 5, nDAC = 8, no = nADC = 6");
 ylim([0,150]);
 xlabel('error')
 ylabel('count')
 ax = gca; 
 ax.FontSize = 30; 
 box on;
-exportgraphics(gcf, 'c8no_vs_c8_bs_trf_nDAC=10_no=nADC=6.pdf', 'ContentType', 'vector');
+% exportgraphics(gcf, 'c8no_vs_c8_bs_trf_nDAC=8_no=nADC=6.pdf', 'ContentType', 'vector');
