@@ -1,4 +1,4 @@
-function c = transfer_mul(a,b,nbit,nDAC, nADC, no, nflag,r1,r2,alpha, beta, gamma)
+function c = transfer_mul(a,b,nbit,nDAC,nADC,no,nflag,r1,r2,alpha, beta,gamma)
 %TRANSFER_MUL performs a*b operation based on the 5-step transfer model.  
 %   Input:  a: a floating-point number
 %           b: a floating-point number
@@ -39,8 +39,8 @@ function c = transfer_mul(a,b,nbit,nDAC, nADC, no, nflag,r1,r2,alpha, beta, gamm
     a_inv = recover(amap, r1, r2, alpha);
     b_inv = recover(bmap, r1, r2, alpha);
     
-    a_inv = trun(a_inv, Tdac).double; 
-    b_inv = trun(b_inv, Tdac).double; 
+    a_inv = quan(a_inv, Tdac).double; 
+    b_inv = quan(b_inv, Tdac).double; 
     
     % Step 2: Add DAC noise
     aDAC = a_inv + noise(sigma1);
@@ -58,7 +58,7 @@ function c = transfer_mul(a,b,nbit,nDAC, nADC, no, nflag,r1,r2,alpha, beta, gamm
     cA = co + noise(sigma2);
 
     % Step 5: Digital quantization and recover of affine mapping
-    c = trun(cA, Tadc);
+    c = quan(cA, Tadc);
     
     c = invmap_mul(c, a, b, beta, gamma);
 end

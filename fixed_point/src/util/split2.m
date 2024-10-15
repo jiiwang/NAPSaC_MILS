@@ -30,7 +30,7 @@ function [Afi1,Afi2] = split2(A,T1,T2,T3)
             if A(i,j) < 0
                 isNeg = -1;
             end
-            fiT1 = trun(isNeg*A(i,j),T1);
+            fiT1 = quan(isNeg*A(i,j),T1);
             
             % binary representation of the non-negative fixed-point of
             % numerictype T1
@@ -47,7 +47,7 @@ function [Afi1,Afi2] = split2(A,T1,T2,T3)
     end
     
     % convert to fixed-point of numerictype T2 and T3
-    Afi1 = trun(A1, T2);
-    Afi2 = trun(A2, T3);
+    Afi1 = quan(A1, T2);
+    Afi2 = quan(A2, T3);
 end
 

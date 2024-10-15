@@ -24,7 +24,7 @@ for i = 1:n
 
     for j = 1:ntrial
 
-        c_fi_no = noisy_op(a, b, '*', nbit, nbit, nbit, nbit-1, 1);
+        c_fi_no = noisy_op(a, b, '*', nbit, nbit, nbit, nbit, 1);
         
         err = c_fi.double-c_fi_no.double;
                 

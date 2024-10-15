@@ -65,9 +65,9 @@ function c = bs_mul(a,b,nbit,pbit,qbit,nDAC,nADC,no,nflag)
     
     % Step 5: Digital quantization and process the result from 4
     % multiplications
-    c = trun(c11ADC,T) + 2^-pbit*(trun(c21ADC, T)+trun(c12ADC, T)) + 2^(-2*pbit)*trun(c22ADC,T);
+    c = quan(c11ADC,T) + 2^-pbit*(quan(c21ADC, T)+quan(c12ADC, T)) + 2^(-2*pbit)*quan(c22ADC,T);
 
     % Step 6: Digital quantization 9
-    c = trun(c, T1);
+    c = quan(c, T1);
 end
 
