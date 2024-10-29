@@ -1,4 +1,4 @@
-function c = transfer_mul(a,b,nbit,nDAC,nADC,no,nflag,r1,r2,alpha, beta,gamma)
+function c = transfer_mul(a,b,nbit,nDAC,nADC,no,nflag,r1,r2,alpha,beta,gamma)
 %TRANSFER_MUL performs a*b operation based on the 5-step transfer model.  
 %   Input:  a: a floating-point number
 %           b: a floating-point number
