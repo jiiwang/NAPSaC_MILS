@@ -1,4 +1,8 @@
+%% Demo script for Model 1
 format longE;
+addpath('src/util');
+addpath('src/fi');
+
 %% Create fixed-point numeritype object
 % create a 9 bit fixed-point numeritype object with 1 bit for sign, 
 % and 8 bits for fractions

@@ -1,3 +1,4 @@
+% Model 1 in the notes
 function cfi = fi_op(a,b,T,op)
 %FI_OP performs afi op bfi operation.
 %   Input:  afi: a fixed-point number of of arbitrary numerictype

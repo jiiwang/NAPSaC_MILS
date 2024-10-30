@@ -1,3 +1,4 @@
+% Model 2 in the notes
 function c = noisy_op(a,b,op,nbit,nDAC,nADC,no,nflag)
 %NOISY_MUL performs a op b operation based on the 5-step noisy model.  
 %   Input:  a: a floating-point number

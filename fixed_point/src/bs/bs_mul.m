@@ -1,10 +1,10 @@
-function c = bs_mul(a,b,nbit,pbit,qbit,nDAC,nADC,no,nflag)
+function c = bs_mul(a,b,nbit,n1bit,n2bit,nDAC,nADC,no,nflag)
 %BS_MUL performs a*b operation based on the bit-slicing noisy model.  
 %   Input:  a: a floating-point number
 %           b: a floating-point number
 %           nbit: target number of bits
-%           pbit: slice 1 actual number of bits
-%           qbit: slice 2 actual number of bits
+%           n1bit: slice 1 actual number of bits
+%           n2bit: slice 2 actual number of bits
 %           nDAC: DAC noise order
 %           nADC: ADC noise order
 %           no: optical noise order
@@ -12,8 +12,8 @@ function c = bs_mul(a,b,nbit,pbit,qbit,nDAC,nADC,no,nflag)
 %           no noise otherwise            
 %   Output: c: a signed nbit fixed-point number
     T1 = numerictype(1,nbit+1,nbit);
-    T2 = numerictype(1,pbit+1,pbit);
-    T3 = numerictype(1,qbit+1,qbit);
+    T2 = numerictype(1,n1bit+1,n1bit);
+    T3 = numerictype(1,n2bit+1,n2bit);
     T = numerictype(1,nADC+1,nADC);
     
     amax = 1;
@@ -65,7 +65,7 @@ function c = bs_mul(a,b,nbit,pbit,qbit,nDAC,nADC,no,nflag)
     
     % Step 5: Digital quantization and process the result from 4
     % multiplications
-    c = quan(c11ADC,T) + 2^-pbit*(quan(c21ADC, T)+quan(c12ADC, T)) + 2^(-2*pbit)*quan(c22ADC,T);
+    c = quan(c11ADC,T) + 2^-n1bit*(quan(c21ADC, T)+quan(c12ADC, T)) + 2^(-2*n1bit)*quan(c22ADC,T);
 
     % Step 6: Digital quantization 9
     c = quan(c, T1);

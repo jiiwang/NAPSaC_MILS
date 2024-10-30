@@ -1,0 +1,352 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>test_fi_op</title>
+<meta name="generator" content="MATLAB 23.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-10-29">
+<meta name="DC.source" content="test_fi_op.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Demo script for Model 1</a>
+</li>
+<li>
+<a href="#2">Create fixed-point numeritype object</a>
+</li>
+<li>
+<a href="#3">Generate two input numbers</a>
+</li>
+<li>
+<a href="#4">Addition</a>
+</li>
+<li>
+<a href="#5">Subtraction</a>
+</li>
+<li>
+<a href="#6">Multiplication</a>
+</li>
+<li>
+<a href="#7">Division</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Demo script for Model 1</h2>
+<pre class="codeinput">format <span class="string">longE</span>;
+addpath(<span class="string">'src/util'</span>);
+addpath(<span class="string">'src/fi'</span>);
+</pre>
+<h2 id="2">Create fixed-point numeritype object</h2>
+<p>create a 9 bit fixed-point numeritype object with 1 bit for sign, and 8 bits for fractions</p>
+<pre class="codeinput">nbit = 8;
+T = numerictype(1,nbit+1,nbit);
+</pre>
+<h2 id="3">Generate two input numbers</h2>
+<pre class="codeinput">a = rand(1)
+
+b = rand(1)
+
+<span class="comment">% a in 8-bit fixed point:</span>
+afi8 = quan(a, T)
+
+<span class="comment">% b in 8-bit fixed point:</span>
+bfi8 = quan(b, T)
+</pre>
+<pre class="codeoutput">
+a =
+
+     6.323592462254095e-01
+
+
+b =
+
+     9.754040499940952e-02
+
+
+afi8 = 
+
+     6.328125000000000e-01
+
+          DataTypeMode: Fixed-point: binary point scaling
+            Signedness: Signed
+            WordLength: 9
+        FractionLength: 8
+
+bfi8 = 
+
+     9.765625000000000e-02
+
+          DataTypeMode: Fixed-point: binary point scaling
+            Signedness: Signed
+            WordLength: 9
+        FractionLength: 8
+</pre>
+<h2 id="4">Addition</h2>
+<p>a + b in double precision:</p>
+<pre class="codeinput">c_add_d = a + b
+
+<span class="comment">% a + b in 8-bit fixed-point:</span>
+c_add_fi = fi_op(afi8, bfi8, T, <span class="string">'+'</span>)
+
+disp(<span class="string">'error: c_add_d - c_add_fi'</span>)
+c_add_d - c_add_fi.double
+</pre>
+<pre class="codeoutput">
+c_add_d =
+
+     7.298996512248190e-01
+
+
+c_add_fi = 
+
+     7.304687500000000e-01
+
+          DataTypeMode: Fixed-point: binary point scaling
+            Signedness: Signed
+            WordLength: 9
+        FractionLength: 8
+error: c_add_d - c_add_fi
+
+ans =
+
+    -5.690987751809651e-04
+
+</pre>
+<h2 id="5">Subtraction</h2>
+<p>a - b in double precision:</p>
+<pre class="codeinput">c_sub_d = a - b
+
+<span class="comment">% a - b in 8-bit fixed-point:</span>
+c_sub_fi = fi_op(afi8, bfi8, T, <span class="string">'-'</span>)
+
+disp(<span class="string">'error: c_sub_d - c_sub_fi'</span>)
+c_sub_d - c_sub_fi.double
+</pre>
+<pre class="codeoutput">
+c_sub_d =
+
+     5.348188412260000e-01
+
+
+c_sub_fi = 
+
+     5.351562500000000e-01
+
+          DataTypeMode: Fixed-point: binary point scaling
+            Signedness: Signed
+            WordLength: 9
+        FractionLength: 8
+error: c_sub_d - c_sub_fi
+
+ans =
+
+    -3.374087740000142e-04
+
+</pre>
+<h2 id="6">Multiplication</h2>
+<p>a * b in double precision:</p>
+<pre class="codeinput">c_mul_d = a * b
+
+<span class="comment">% a * b in 8-bit fixed-point:</span>
+c_mul_fi = fi_op(afi8, bfi8, T, <span class="string">'*'</span>)
+
+disp(<span class="string">'error: c_mul_d - c_mul_fi'</span>)
+c_mul_d - c_mul_fi.double
+</pre>
+<pre class="codeoutput">
+c_mul_d =
+
+     6.168057698194777e-02
+
+
+c_mul_fi = 
+
+     6.250000000000000e-02
+
+          DataTypeMode: Fixed-point: binary point scaling
+            Signedness: Signed
+            WordLength: 9
+        FractionLength: 8
+error: c_mul_d - c_mul_fi
+
+ans =
+
+    -8.194230180522261e-04
+
+</pre>
+<h2 id="7">Division</h2>
+<p>b / a in double precision:</p>
+<pre class="codeinput">c_div_d = b / a
+
+<span class="comment">% b / a in 8-bit fixed-point:</span>
+c_div_fi = fi_op(bfi8, afi8, T, <span class="string">'/'</span>)
+
+disp(<span class="string">'error: c_div_d - c_div_fi'</span>)
+c_div_d - c_div_fi.double
+</pre>
+<pre class="codeoutput">
+c_div_d =
+
+     1.542484048136152e-01
+
+
+c_div_fi = 
+
+     1.562500000000000e-01
+
+          DataTypeMode: Fixed-point: binary point scaling
+            Signedness: Signed
+            WordLength: 9
+        FractionLength: 8
+error: c_div_d - c_div_fi
+
+ans =
+
+    -2.001595186384819e-03
+
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2023b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% Demo script for Model 1
+format longE;
+addpath('src/util');
+addpath('src/fi');
+
+%% Create fixed-point numeritype object
+% create a 9 bit fixed-point numeritype object with 1 bit for sign, 
+% and 8 bits for fractions
+nbit = 8;
+T = numerictype(1,nbit+1,nbit);
+
+%% Generate two input numbers
+a = rand(1)
+
+b = rand(1)
+
+% a in 8-bit fixed point:
+afi8 = quan(a, T)
+
+% b in 8-bit fixed point:
+bfi8 = quan(b, T)
+
+%% Addition
+% a + b in double precision:
+c_add_d = a + b
+
+% a + b in 8-bit fixed-point:
+c_add_fi = fi_op(afi8, bfi8, T, '+')
+
+disp('error: c_add_d - c_add_fi')
+c_add_d - c_add_fi.double
+
+%% Subtraction
+% a - b in double precision:
+c_sub_d = a - b
+
+% a - b in 8-bit fixed-point:
+c_sub_fi = fi_op(afi8, bfi8, T, '-')
+
+disp('error: c_sub_d - c_sub_fi')
+c_sub_d - c_sub_fi.double
+
+%% Multiplication
+% a * b in double precision:
+c_mul_d = a * b
+
+% a * b in 8-bit fixed-point:
+c_mul_fi = fi_op(afi8, bfi8, T, '*')
+
+disp('error: c_mul_d - c_mul_fi')
+c_mul_d - c_mul_fi.double
+
+%% Division
+% b / a in double precision:
+c_div_d = b / a
+
+% b / a in 8-bit fixed-point:
+c_div_fi = fi_op(bfi8, afi8, T, '/')
+
+disp('error: c_div_d - c_div_fi')
+c_div_d - c_div_fi.double
+   
+##### SOURCE END #####
+-->
+</body>
+</html>
