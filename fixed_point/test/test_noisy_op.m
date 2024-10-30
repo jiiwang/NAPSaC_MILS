@@ -20,7 +20,7 @@ for i = 1:n
     i
     a = rand(1);
     b = rand(1);
-
+    
     c_fi = fi_op(a,b,T,'*');
 
     for j = 1:ntrial
@@ -58,7 +58,7 @@ leg = legend('$c_{16}-\widehat{c_{16}}$', ...
 set(leg,'Interpreter','latex');
 set(leg,'FontSize',40);
 set(leg, 'Location','north');
-ylim([0,150]);
+ylim([0,100]);
 xlabel('error')
 ylabel('count')
 ax = gca; 
